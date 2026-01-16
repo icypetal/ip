@@ -26,3 +26,9 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 
 ## Level-5
 - It copied the error messages directly (even though the website said not to), needing a few follow up prompts to fix it
+
+## Level-6
+- Was able to do it first try
+
+## A-Enums
+- Was able to do it first try
