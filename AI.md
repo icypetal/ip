@@ -1,8 +1,8 @@
 
 # AI Tools Record
 
-  ## Tools Used
-   Gemini 3 Pro (High) in Antigravity IDE in planning mode
+## Tools Used
+-Gemini 3 Pro (High) in Antigravity IDE in planning mode
 
 ## Level-0
 -  **Observations**:
@@ -11,6 +11,5 @@
 - Overall did not save much time
 
 ## Level-1
-- **Observations**:
-- Required 1 extra prompt correct the formatting of the output
-- It did save some time
+-  **Observations**:
+- Was able to do it without errors and saved much time
