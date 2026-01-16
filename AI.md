@@ -20,3 +20,6 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 
 ## Level-4
 - Was able to do it first try
+
+## A-TextUiTesting
+- Faced minor issues with the filepaths, but was able to rectify itself
