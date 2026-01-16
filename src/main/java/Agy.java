@@ -47,12 +47,41 @@ public class Agy {
                 } catch (NumberFormatException e) {
                     printMessage("Please provide a valid task number.");
                 }
+            } else if (input.startsWith("todo ")) {
+                Task task = new Todo(input.substring(5));
+                addTask(tasks, task);
+            } else if (input.startsWith("deadline ")) {
+                String[] parts = input.substring(9).split(" /by ");
+                if (parts.length < 2) {
+                    printMessage("Please provide a deadline description and /by date.");
+                } else {
+                    Task task = new Deadline(parts[0], parts[1]);
+                    addTask(tasks, task);
+                }
+            } else if (input.startsWith("event ")) {
+                String[] parts = input.substring(6).split(" /from ");
+                if (parts.length < 2) {
+                    printMessage("Please provide an event description and /from time.");
+                } else {
+                    String[] times = parts[1].split(" /to ");
+                    if (times.length < 2) {
+                        printMessage("Please provide an event /to time.");
+                    } else {
+                        Task task = new Event(parts[0], times[0], times[1]);
+                        addTask(tasks, task);
+                    }
+                }
             } else {
-                tasks.add(new Task(input));
-                printMessage("added: " + input);
+                printMessage("I'm sorry, I don't understand that command.");
             }
         }
         scanner.close();
+    }
+
+    private static void addTask(List<Task> tasks, Task task) {
+        tasks.add(task);
+        printMessage(
+                "Got it. I've added this task:\n  " + task + "\nNow you have " + tasks.size() + " tasks in the list.");
     }
 
     private static void printMessage(String message) {
