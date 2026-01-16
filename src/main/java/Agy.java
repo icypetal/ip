@@ -9,7 +9,7 @@ public class Agy {
         printMessage("Hello! I'm Agy\nWhat can I do for you?");
 
         Scanner scanner = new Scanner(System.in);
-        List<String> tasks = new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
 
         while (true) {
             String input = scanner.nextLine();
@@ -18,11 +18,37 @@ public class Agy {
                 break;
             } else if (input.equals("list")) {
                 String listOutput = IntStream.range(0, tasks.size())
-                        .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
+                        .mapToObj(i -> (i + 1) + "." + tasks.get(i))
                         .collect(Collectors.joining("\n"));
-                printMessage(listOutput);
+                printMessage("Here are the tasks in your list:\n" + listOutput);
+            } else if (input.startsWith("mark ")) {
+                try {
+                    int index = Integer.parseInt(input.substring(5)) - 1;
+                    if (index >= 0 && index < tasks.size()) {
+                        Task task = tasks.get(index);
+                        task.markAsDone();
+                        printMessage("Nice! I've marked this task as done:\n  " + task);
+                    } else {
+                        printMessage("Invalid task number.");
+                    }
+                } catch (NumberFormatException e) {
+                    printMessage("Please provide a valid task number.");
+                }
+            } else if (input.startsWith("unmark ")) {
+                try {
+                    int index = Integer.parseInt(input.substring(7)) - 1;
+                    if (index >= 0 && index < tasks.size()) {
+                        Task task = tasks.get(index);
+                        task.markAsNotDone();
+                        printMessage("OK, I've marked this task as not done yet:\n  " + task);
+                    } else {
+                        printMessage("Invalid task number.");
+                    }
+                } catch (NumberFormatException e) {
+                    printMessage("Please provide a valid task number.");
+                }
             } else {
-                tasks.add(input);
+                tasks.add(new Task(input));
                 printMessage("added: " + input);
             }
         }
