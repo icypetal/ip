@@ -48,6 +48,19 @@ public class Agy {
                     } catch (NumberFormatException e) {
                         throw new AgyException("Please provide a valid task number.");
                     }
+                } else if (input.startsWith("delete ")) {
+                    try {
+                        int index = Integer.parseInt(input.substring(7)) - 1;
+                        if (index >= 0 && index < tasks.size()) {
+                            Task task = tasks.remove(index);
+                            printMessage("Noted. I've removed this task:\n  " + task + "\nNow you have " + tasks.size()
+                                    + " tasks in the list.");
+                        } else {
+                            throw new AgyException("Invalid task number.");
+                        }
+                    } catch (NumberFormatException e) {
+                        throw new AgyException("Please provide a valid task number.");
+                    }
                 } else if (input.startsWith("todo")) {
                     if (input.trim().length() <= 4) {
                         throw new AgyException(
