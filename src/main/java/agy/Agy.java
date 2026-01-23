@@ -15,12 +15,21 @@ import java.time.format.DateTimeParseException;
 import java.util.stream.IntStream;
 import java.util.stream.Collectors;
 
+/**
+ * The main class for the Agy application.
+ * Initializes the application and handles the main event loop.
+ */
 public class Agy {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
     private static final String FILE_PATH = "./data/agy.txt";
 
+    /**
+     * Initializes the Agy application with the specified file path for storage.
+     *
+     * @param filePath The file path to load/save tasks.
+     */
     public Agy(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -31,6 +40,10 @@ public class Agy {
         }
     }
 
+    /**
+     * Runs the main application loop.
+     * Handles user input and executes commands until the user exits.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -161,6 +174,11 @@ public class Agy {
         return t.toString();
     }
 
+    /**
+     * The entry point of the application.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         new Agy(FILE_PATH).run();
     }
