@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.time.format.DateTimeParseException;
 
 public class Agy {
     private static final String FILE_PATH = "./data/agy.txt";
@@ -89,9 +90,14 @@ public class Agy {
                             throw new AgyException(
                                     "Error: Dates/times cannot be empty. Usage: deadline <description> /by <time>");
                         }
-                        Task dlTask = new Deadline(parts[0], parts[1]);
-                        addTask(tasks, dlTask);
-                        saveTasks(tasks);
+                        try {
+                            Task dlTask = new Deadline(parts[0], parts[1]);
+                            addTask(tasks, dlTask);
+                            saveTasks(tasks);
+                        } catch (DateTimeParseException e) {
+                            throw new AgyException(
+                                    "Error: Invalid date format. Please use yyyy-mm-dd (e.g., 2019-10-15).");
+                        }
                         break;
                     case EVENT:
                         if (input.trim().length() <= 5) {
@@ -163,7 +169,11 @@ public class Agy {
                         task = new Todo(parts[2]);
                         break;
                     case "D":
-                        task = new Deadline(parts[2], parts[3]);
+                        try {
+                            task = new Deadline(parts[2], parts[3]);
+                        } catch (DateTimeParseException e) {
+                            // Skip corrupted date
+                        }
                         break;
                     case "E":
                         task = new Event(parts[2], parts[3], parts[4]);

@@ -32,3 +32,11 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 
 ## A-Enums
 - Was able to do it first try
+
+## Level-7
+- The agent was able to follow the Git standard correctly, and perform the branch and merging correctly, albeit requiring follow up prompts as it forgot to merge the branch back to master
+
+- The agent suddenly could not detect the rules in the previous session, requiring me to now set the workspace rules as global rules
+
+## Level-8
+- It was able to implement the dates and times in yyyy-mm-dd format and print in MMM dd yyyy
