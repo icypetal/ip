@@ -45,3 +45,11 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 - Was able to add the required classes to perform the required functions on the first try.
 - Randomly decided to add the save file data/agy.txt to be tracked by git, requiring a follow-up prompt to rectify it
 
+## A-Packages
+- It had some issues moving files to proper directories as it assumed I was on Linux instead of Windows
+- Took much longer to rectify than expected
+
+## A-Gradle
+- It seems that the Agent is becoming less intelligent as more tokens are being used (as I am reusing the same session)
+- It tried to add internal files to the git repo, such as the implementation_plan.md
+- It also did not follow the instructions as it tried to merge add-gradle-support to a separate branch first then to master, instead of directly to master.
