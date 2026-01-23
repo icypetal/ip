@@ -53,3 +53,6 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 - It seems that the Agent is becoming less intelligent as more tokens are being used (as I am reusing the same session)
 - It tried to add internal files to the git repo, such as the implementation_plan.md
 - It also did not follow the instructions as it tried to merge add-gradle-support to a separate branch first then to master, instead of directly to master.
+
+## A-JUnit
+- Faced some troubles with the agent running the tests, as it had some issues with Gradle's resource locks leading to errors, even though the tests itself were fine.
