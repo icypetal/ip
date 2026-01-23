@@ -1,19 +1,19 @@
 package agy;
 
-import agy.ui.Ui;
+import java.time.format.DateTimeParseException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import agy.command.Command;
+import agy.exception.AgyException;
+import agy.parser.Parser;
 import agy.storage.Storage;
-import agy.task.TaskList;
-import agy.task.Task;
-import agy.task.Todo;
 import agy.task.Deadline;
 import agy.task.Event;
-import agy.command.Command;
-import agy.parser.Parser;
-import agy.exception.AgyException;
-
-import java.time.format.DateTimeParseException;
-import java.util.stream.IntStream;
-import java.util.stream.Collectors;
+import agy.task.Task;
+import agy.task.TaskList;
+import agy.task.Todo;
+import agy.ui.Ui;
 
 /**
  * The main class for the Agy application.
@@ -169,11 +169,6 @@ public class Agy {
         }
     }
 
-    // Helper to format string for printMessage to keep it consistent
-    private String task(Task t) {
-        return t.toString();
-    }
-
     /**
      * The entry point of the application.
      *
@@ -182,4 +177,10 @@ public class Agy {
     public static void main(String[] args) {
         new Agy(FILE_PATH).run();
     }
+
+    // Helper to format string for printMessage to keep it consistent
+    private String task(Task t) {
+        return t.toString();
+    }
+}
 }
