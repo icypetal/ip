@@ -56,3 +56,16 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 
 ## A-JUnit
 - Faced some troubles with the agent running the tests, as it had some issues with Gradle's resource locks leading to errors, even though the tests itself were fine.
+
+## A-Jar
+- Generated the jar file successfully using gradle
+
+## A-JavaDoc
+- Added comments without issues
+
+## A-CodingStandard
+- No issues
+
+## Level-9
+- Logic was implemented without issue
+- Managed to automatically resolve merge conflicts without human intervention
