@@ -1,7 +1,19 @@
-import java.time.format.DateTimeParseException;
+package agy;
 
-import java.util.stream.Collectors;
+import agy.ui.Ui;
+import agy.storage.Storage;
+import agy.task.TaskList;
+import agy.task.Task;
+import agy.task.Todo;
+import agy.task.Deadline;
+import agy.task.Event;
+import agy.command.Command;
+import agy.parser.Parser;
+import agy.exception.AgyException;
+
+import java.time.format.DateTimeParseException;
 import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 public class Agy {
     private Storage storage;

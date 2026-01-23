@@ -1,3 +1,5 @@
+package agy.command;
+
 public enum Command {
     BYE,
     LIST,

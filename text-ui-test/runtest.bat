@@ -10,7 +10,7 @@ if exist data rmdir /s /q data
 
 
 REM compile the code into the bin folder
-javac  -cp ..\src\main\java -Xlint:none -d ..\bin ..\src\main\java\Agy.java ..\src\main\java\Task.java ..\src\main\java\Todo.java ..\src\main\java\Deadline.java ..\src\main\java\Event.java
+javac  -cp ..\src\main\java -Xlint:none -d ..\bin ..\src\main\java\agy\Agy.java
 IF ERRORLEVEL 1 (
     echo ********** BUILD FAILURE **********
     exit /b 1
@@ -18,7 +18,7 @@ IF ERRORLEVEL 1 (
 REM no error here, errorlevel == 0
 
 REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ..\bin Agy < input.txt > ACTUAL.TXT
+java -classpath ..\bin agy.Agy < input.txt > ACTUAL.TXT
 
 REM compare the output to the expected output
 FC ACTUAL.TXT EXPECTED.TXT

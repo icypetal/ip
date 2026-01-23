@@ -1,3 +1,5 @@
+package agy.ui;
+
 import java.util.Scanner;
 
 public class Ui {

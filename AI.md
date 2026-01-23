@@ -43,3 +43,5 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 
 ## A-MoreOOP
 - Was able to add the required classes to perform the required functions on the first try.
+- Randomly decided to add the save file data/agy.txt to be tracked by git, requiring a follow-up prompt to rectify it
+
