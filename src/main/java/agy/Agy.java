@@ -4,6 +4,8 @@ import agy.ui.Ui;
 import agy.storage.Storage;
 import agy.task.TaskList;
 import agy.task.Task;
+
+import java.util.List;
 import agy.task.Todo;
 import agy.task.Deadline;
 import agy.task.Event;
@@ -78,6 +80,17 @@ public class Agy {
                         } catch (NumberFormatException e) {
                             throw new AgyException("Please provide a valid task number.");
                         }
+                        break;
+                    case FIND:
+                        if (fullCommand.trim().length() <= 4) {
+                            throw new AgyException("Error: The keyword cannot be empty. Usage: find <keyword>");
+                        }
+                        String keyword = fullCommand.substring(5).trim();
+                        List<Task> foundTasks = tasks.findTasks(keyword);
+                        String foundListOutput = IntStream.range(0, foundTasks.size())
+                                .mapToObj(i -> (i + 1) + "." + foundTasks.get(i))
+                                .collect(Collectors.joining("\n"));
+                        ui.printMessage("Here are the matching tasks in your list:\n" + foundListOutput);
                         break;
                     case TODO:
                         if (fullCommand.trim().length() <= 4) {
