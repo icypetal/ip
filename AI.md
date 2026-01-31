@@ -73,3 +73,8 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 ## A-CheckStyle
 - Impressed by the agent being able to find and download the correct checkstyle.xml and suppressions.xml without me explicitly giving the link
 - However, the agent faced much trouble with formatting the files to meet the requirement even after multiple attempts, requiring me to manually format the files
+
+## Level-10
+- Was able to follow the instructions and code in the SE-EDU guide to implement a similar UI, albeit taking 17 attempts to fix its own code
+- Used Gemini Nano Banana for image generation within the agent for the "DaAgy.png" and "DaUser.png" files
+
