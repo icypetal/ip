@@ -69,3 +69,7 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 ## Level-9
 - Logic was implemented without issue
 - Managed to automatically resolve merge conflicts without human intervention
+
+## A-CheckStyle
+- Impressed by the agent being able to find and download the correct checkstyle.xml and suppressions.xml without me explicitly giving the link
+- However, the agent faced much trouble with formatting the files to meet the requirement even after multiple attempts, requiring me to manually format the files

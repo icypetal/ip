@@ -3,8 +3,8 @@ package agy.ui;
 import java.util.Scanner;
 
 /**
- * Handles the user interface of the application.
- * Manages reading specific commands and displaying messages to the user.
+ * Handles the user interface of the application. Manages reading specific
+ * commands and displaying messages to the user.
  */
 public class Ui {
     private Scanner scanner;

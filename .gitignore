@@ -22,3 +22,6 @@ text-ui-test/EXPECTED-UNIX.TXT
 # Data files
 data/
 text-ui-test/data/
+
+.vscode/
+eclipse-java-formatter.xml

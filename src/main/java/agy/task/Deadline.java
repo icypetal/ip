@@ -3,9 +3,18 @@ package agy.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a Deadline task.
+ */
 public class Deadline extends Task {
     protected LocalDate by;
 
+    /**
+     * Creates a new Deadline task.
+     *
+     * @param description The description of the deadline.
+     * @param by The deadline date (in yyyy-mm-dd format).
+     */
     public Deadline(String description, String by) {
         super(description);
         this.by = LocalDate.parse(by);

@@ -46,19 +46,22 @@ public class Storage {
                 String[] parts = line.split(" \\| ");
                 Task task = null;
                 switch (parts[0]) {
-                    case "T":
-                        task = new Todo(parts[2]);
-                        break;
-                    case "D":
-                        try {
-                            task = new Deadline(parts[2], parts[3]);
-                        } catch (DateTimeParseException e) {
-                            // Skip corrupted date
-                        }
-                        break;
-                    case "E":
-                        task = new Event(parts[2], parts[3], parts[4]);
-                        break;
+                case "T":
+                    task = new Todo(parts[2]);
+                    break;
+                case "D":
+                    try {
+                        task = new Deadline(parts[2], parts[3]);
+                    } catch (DateTimeParseException e) {
+                        // Skip corrupted date
+                    }
+                    break;
+                case "E":
+                    task = new Event(parts[2], parts[3], parts[4]);
+                    break;
+                default:
+                    // Unknown task type, skip
+                    break;
                 }
                 if (task != null) {
                     if (parts[1].equals("1")) {

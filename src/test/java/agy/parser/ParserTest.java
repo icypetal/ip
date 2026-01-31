@@ -1,10 +1,12 @@
 package agy.parser;
 
-import agy.command.Command;
-import agy.exception.AgyException;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
+import agy.command.Command;
+import agy.exception.AgyException;
 
 public class ParserTest {
     @Test
