@@ -1,11 +1,16 @@
 package agy.task;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * Represents a task with a description and completion status.
  */
 public class Task {
     protected String description;
     protected boolean isDone;
+    protected Set<String> tags;
 
     /**
      * Creates a new Task with the given description.
@@ -15,6 +20,7 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.tags = new HashSet<>();
     }
 
     public String getStatusIcon() {
@@ -29,12 +35,33 @@ public class Task {
         this.isDone = false;
     }
 
+    /**
+     * Adds a tag to the task.
+     *
+     * @param tag The tag to add.
+     */
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    /**
+     * Removes a tag from the task.
+     *
+     * @param tag The tag to remove.
+     */
+    public void removeTag(String tag) {
+        tags.remove(tag);
+    }
+
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        String tagsString = tags.isEmpty() ? ""
+                : " " + tags.stream().map(t -> "#" + t).collect(Collectors.joining(" "));
+        return "[" + getStatusIcon() + "] " + description + tagsString;
     }
 
     public String toFileFormat() {
-        return " | " + (isDone ? "1" : "0") + " | " + description;
+        String tagsString = tags.isEmpty() ? "" : " | " + String.join(" ", tags);
+        return " | " + (isDone ? "1" : "0") + " | " + description + tagsString;
     }
 }

@@ -68,6 +68,12 @@ public class Storage {
                     if (parts[1].equals("1")) {
                         task.markAsDone();
                     }
+                    if (parts.length > 3 && !parts[3].trim().isEmpty()) {
+                        String[] tags = parts[3].trim().split(" ");
+                        for (String tag : tags) {
+                            task.addTag(tag);
+                        }
+                    }
                     tasks.add(task);
                 }
             }

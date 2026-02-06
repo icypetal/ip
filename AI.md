@@ -78,3 +78,11 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 - Was able to follow the instructions and code in the SE-EDU guide to implement a similar UI, albeit taking 17 attempts to fix its own code
 - Used Gemini Nano Banana for image generation within the agent for the "DaAgy.png" and "DaUser.png" files
 
+## A-Assertions
+- Added a few basic assertions to test
+
+## A-CodeQuality
+- Refactored the Agy class to follow SLAP
+
+## BCD-Extension
+- Added C-Tagging without issues

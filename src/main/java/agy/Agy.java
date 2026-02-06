@@ -96,6 +96,8 @@ public class Agy {
                 return handleEvent(input);
             case DELETE:
                 return handleDelete(input);
+            case TAG:
+                return handleTag(input);
             default:
                 return "Error: Unknown command";
             }
@@ -217,6 +219,27 @@ public class Agy {
         storage.save(tasks.getAll());
         return "Got it. I've added this task:\n" + "  " + task + "\nNow you have " + tasks.size()
                 + " tasks in the list.";
+    }
+
+    private String handleTag(String input) throws AgyException {
+        String[] parts = input.split(" ");
+        if (parts.length < 3) {
+            throw new AgyException("Error: Invalid tag command. Usage: tag <task index> <tag name>");
+        }
+        try {
+            int index = Integer.parseInt(parts[1]) - 1;
+            validateIndex(index);
+            Task task = tasks.get(index);
+            String tag = parts[2];
+            if (tag.startsWith("#")) {
+                tag = tag.substring(1);
+            }
+            task.addTag(tag);
+            storage.save(tasks.getAll());
+            return "Nice! I've added the tag #" + tag + " to this task:\n" + "  " + task;
+        } catch (NumberFormatException e) {
+            throw new AgyException("Please provide a valid task number.");
+        }
     }
 
     private void validateIndex(int index) throws AgyException {
