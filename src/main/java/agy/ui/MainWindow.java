@@ -34,6 +34,7 @@ public class MainWindow extends AnchorPane {
     }
 
     public void setAgy(Agy d) {
+        assert d != null : "Agy instance cannot be null";
         agy = d;
     }
 

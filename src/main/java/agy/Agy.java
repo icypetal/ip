@@ -191,6 +191,7 @@ public class Agy {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
+        assert input != null : "Input to getResponse cannot be null";
         try {
             Command command = Parser.parse(input);
             switch (command) {
