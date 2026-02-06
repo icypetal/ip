@@ -42,138 +42,18 @@ public class Agy {
     }
 
     /**
-     * Runs the main application loop. Handles user input and executes commands
-     * until the user exits.
+     * Runs the main application loop. Handles user input by delegating to
+     * getResponse.
      */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
         while (!isExit) {
-            try {
-                String fullCommand = ui.readCommand();
-                Command command = Parser.parse(fullCommand);
-                switch (command) {
-                case BYE:
-                    ui.printMessage("Bye. Hope to see you again soon!");
-                    isExit = true;
-                    break;
-                case LIST:
-                    String listOutput = IntStream.range(0, tasks.size()).mapToObj(i -> (i + 1) + "." + tasks.get(i))
-                            .collect(Collectors.joining("\n"));
-                    ui.printMessage("Here are the tasks in your list:\n" + listOutput);
-                    break;
-                case MARK:
-                    try {
-                        int index = Integer.parseInt(fullCommand.substring(5)) - 1;
-                        if (index >= 0 && index < tasks.size()) {
-                            Task task = tasks.get(index);
-                            task.markAsDone();
-                            storage.save(tasks.getAll());
-                            ui.printMessage("Nice! I've marked this task as done:\n" + "  " + task);
-                        } else {
-                            throw new AgyException("Invalid task number.");
-                        }
-                    } catch (NumberFormatException e) {
-                        throw new AgyException("Please provide a valid task number.");
-                    }
-                    break;
-                case UNMARK:
-                    try {
-                        int index = Integer.parseInt(fullCommand.substring(7)) - 1;
-                        if (index >= 0 && index < tasks.size()) {
-                            Task task = tasks.get(index);
-                            task.markAsNotDone();
-                            storage.save(tasks.getAll());
-                            ui.printMessage("OK, I've marked this task as not done yet:\n" + "  " + task);
-                        } else {
-                            throw new AgyException("Invalid task number.");
-                        }
-                    } catch (NumberFormatException e) {
-                        throw new AgyException("Please provide a valid task number.");
-                    }
-                    break;
-                case FIND:
-                    if (fullCommand.trim().length() <= 4) {
-                        throw new AgyException("Error: The keyword cannot be empty. Usage: find <keyword>");
-                    }
-                    String keyword = fullCommand.substring(5).trim();
-                    List<Task> foundTasks = tasks.findTasks(keyword);
-                    String foundListOutput = IntStream.range(0, foundTasks.size())
-                            .mapToObj(i -> (i + 1) + "." + foundTasks.get(i)).collect(Collectors.joining("\n"));
-                    ui.printMessage("Here are the matching tasks in your list:\n" + foundListOutput);
-                    break;
-                case TODO:
-                    if (fullCommand.trim().length() <= 4) {
-                        throw new AgyException(
-                                "Error: The description of a todo cannot be empty. Usage: todo <description>");
-                    }
-                    Task task = new Todo(fullCommand.substring(5));
-                    tasks.add(task);
-                    storage.save(tasks.getAll());
-                    ui.printMessage("Got it. I've added this task:\n" + "  " + task + "\nNow you have " + tasks.size()
-                            + " tasks in the list.");
-                    break;
-                case DEADLINE:
-                    if (fullCommand.trim().length() <= 8) {
-                        throw new AgyException("Error: The description of a deadline cannot be empty. "
-                                + "Usage: deadline <description> /by <time>");
-                    }
-                    String[] parts = fullCommand.substring(9).split(" /by ");
-                    if (parts.length < 2) {
-                        throw new AgyException(
-                                "Error: Dates/times cannot be empty. Usage: deadline <description> /by <time>");
-                    }
-                    try {
-                        Task dlTask = new Deadline(parts[0], parts[1]);
-                        tasks.add(dlTask);
-                        storage.save(tasks.getAll());
-                        ui.printMessage("Got it. I've added this task:\n" + "  " + task(dlTask) + "\nNow you have "
-                                + tasks.size() + " tasks in the list.");
-                    } catch (DateTimeParseException e) {
-                        throw new AgyException("Error: Invalid date format. Please use yyyy-mm-dd (e.g., 2019-10-15).");
-                    }
-                    break;
-                case EVENT:
-                    if (fullCommand.trim().length() <= 5) {
-                        throw new AgyException("Error: The description of an event cannot be empty. "
-                                + "Usage: event <description> /from <start> /to <end>");
-                    }
-                    String[] eventParts = fullCommand.substring(6).split(" /from ");
-                    if (eventParts.length < 2) {
-                        throw new AgyException(
-                                "Error: Missing /from or /to. Usage: event <description> /from <start> /to <end>");
-                    }
-                    String[] times = eventParts[1].split(" /to ");
-                    if (times.length < 2) {
-                        throw new AgyException(
-                                "Error: Missing /from or /to. Usage: event <description> /from <start> /to <end>");
-                    }
-                    Task eventTask = new Event(eventParts[0], times[0], times[1]);
-                    tasks.add(eventTask);
-                    storage.save(tasks.getAll());
-                    ui.printMessage("Got it. I've added this task:\n" + "  " + task(eventTask) + "\nNow you have "
-                            + tasks.size() + " tasks in the list.");
-                    break;
-                case DELETE:
-                    try {
-                        int index = Integer.parseInt(fullCommand.substring(7)) - 1;
-                        if (index >= 0 && index < tasks.size()) {
-                            Task removedTask = tasks.delete(index);
-                            storage.save(tasks.getAll());
-                            ui.printMessage("Noted. I've removed this task:\n" + "  " + removedTask + "\nNow you have "
-                                    + tasks.size() + " tasks in the list.");
-                        } else {
-                            throw new AgyException("Invalid task number.");
-                        }
-                    } catch (NumberFormatException e) {
-                        throw new AgyException("Please provide a valid task number.");
-                    }
-                    break;
-                default:
-                    throw new AgyException("Error: Unknown command");
-                }
-            } catch (AgyException e) {
-                ui.showError(e.getMessage());
+            String fullCommand = ui.readCommand();
+            String response = getResponse(fullCommand);
+            ui.printMessage(response);
+            if (fullCommand.trim().equalsIgnoreCase("bye")) {
+                isExit = true;
             }
         }
     }
@@ -189,6 +69,9 @@ public class Agy {
 
     /**
      * Generates a response for the user's chat message.
+     *
+     * @param input The user input command.
+     * @return The response string to be displayed to the user.
      */
     public String getResponse(String input) {
         assert input != null : "Input to getResponse cannot be null";
@@ -196,103 +79,23 @@ public class Agy {
             Command command = Parser.parse(input);
             switch (command) {
             case BYE:
-                return "Bye. Hope to see you again soon!";
+                return handleBye();
             case LIST:
-                return "Here are the tasks in your list:\n" + IntStream.range(0, tasks.size())
-                        .mapToObj(i -> (i + 1) + "." + tasks.get(i)).collect(Collectors.joining("\n"));
+                return handleList();
             case MARK:
-                try {
-                    int index = Integer.parseInt(input.substring(5)) - 1;
-                    if (index >= 0 && index < tasks.size()) {
-                        Task task = tasks.get(index);
-                        task.markAsDone();
-                        storage.save(tasks.getAll());
-                        return "Nice! I've marked this task as done:\n" + "  " + task;
-                    } else {
-                        return "Invalid task number.";
-                    }
-                } catch (NumberFormatException e) {
-                    return "Please provide a valid task number.";
-                }
+                return handleMark(input);
             case UNMARK:
-                try {
-                    int index = Integer.parseInt(input.substring(7)) - 1;
-                    if (index >= 0 && index < tasks.size()) {
-                        Task task = tasks.get(index);
-                        task.markAsNotDone();
-                        storage.save(tasks.getAll());
-                        return "OK, I've marked this task as not done yet:\n" + "  " + task;
-                    } else {
-                        return "Invalid task number.";
-                    }
-                } catch (NumberFormatException e) {
-                    return "Please provide a valid task number.";
-                }
+                return handleUnmark(input);
             case FIND:
-                if (input.trim().length() <= 4) {
-                    return "Error: The keyword cannot be empty. Usage: find <keyword>";
-                }
-                String keyword = input.substring(5).trim();
-                List<Task> foundTasks = tasks.findTasks(keyword);
-                return "Here are the matching tasks in your list:\n" + IntStream.range(0, foundTasks.size())
-                        .mapToObj(i -> (i + 1) + "." + foundTasks.get(i)).collect(Collectors.joining("\n"));
+                return handleFind(input);
             case TODO:
-                if (input.trim().length() <= 4) {
-                    return "Error: The description of a todo cannot be empty. Usage: todo <description>";
-                }
-                Task task = new Todo(input.substring(5));
-                tasks.add(task);
-                storage.save(tasks.getAll());
-                return "Got it. I've added this task:\n" + "  " + task + "\nNow you have " + tasks.size()
-                        + " tasks in the list.";
+                return handleTodo(input);
             case DEADLINE:
-                if (input.trim().length() <= 8) {
-                    return "Error: The description of a deadline cannot be empty. Usage: deadline <description> /by <time>";
-                }
-                String[] parts = input.substring(9).split(" /by ");
-                if (parts.length < 2) {
-                    return "Error: Dates/times cannot be empty. Usage: deadline <description> /by <time>";
-                }
-                try {
-                    Task dlTask = new Deadline(parts[0], parts[1]);
-                    tasks.add(dlTask);
-                    storage.save(tasks.getAll());
-                    return "Got it. I've added this task:\n" + "  " + task(dlTask) + "\nNow you have " + tasks.size()
-                            + " tasks in the list.";
-                } catch (DateTimeParseException e) {
-                    return "Error: Invalid date format. Please use yyyy-mm-dd (e.g., 2019-10-15).";
-                }
+                return handleDeadline(input);
             case EVENT:
-                if (input.trim().length() <= 5) {
-                    return "Error: The description of an event cannot be empty. Usage: event <description> /from <start> /to <end>";
-                }
-                String[] eventParts = input.substring(6).split(" /from ");
-                if (eventParts.length < 2) {
-                    return "Error: Missing /from or /to. Usage: event <description> /from <start> /to <end>";
-                }
-                String[] times = eventParts[1].split(" /to ");
-                if (times.length < 2) {
-                    return "Error: Missing /from or /to. Usage: event <description> /from <start> /to <end>";
-                }
-                Task eventTask = new Event(eventParts[0], times[0], times[1]);
-                tasks.add(eventTask);
-                storage.save(tasks.getAll());
-                return "Got it. I've added this task:\n" + "  " + task(eventTask) + "\nNow you have " + tasks.size()
-                        + " tasks in the list.";
+                return handleEvent(input);
             case DELETE:
-                try {
-                    int index = Integer.parseInt(input.substring(7)) - 1;
-                    if (index >= 0 && index < tasks.size()) {
-                        Task removedTask = tasks.delete(index);
-                        storage.save(tasks.getAll());
-                        return "Noted. I've removed this task:\n" + "  " + removedTask + "\nNow you have "
-                                + tasks.size() + " tasks in the list.";
-                    } else {
-                        return "Invalid task number.";
-                    }
-                } catch (NumberFormatException e) {
-                    return "Please provide a valid task number.";
-                }
+                return handleDelete(input);
             default:
                 return "Error: Unknown command";
             }
@@ -301,8 +104,124 @@ public class Agy {
         }
     }
 
-    // Helper to format string for printMessage to keep it consistent
-    private String task(Task t) {
-        return t.toString();
+    private String handleBye() {
+        return "Bye. Hope to see you again soon!";
+    }
+
+    private String handleList() {
+        if (tasks.size() == 0) {
+            return "Your task list is empty.";
+        }
+        String listOutput = IntStream.range(0, tasks.size()).mapToObj(i -> (i + 1) + "." + tasks.get(i))
+                .collect(Collectors.joining("\n"));
+        return "Here are the tasks in your list:\n" + listOutput;
+    }
+
+    private String handleMark(String input) throws AgyException {
+        try {
+            int index = Integer.parseInt(input.substring(5)) - 1;
+            validateIndex(index);
+            Task task = tasks.get(index);
+            task.markAsDone();
+            storage.save(tasks.getAll());
+            return "Nice! I've marked this task as done:\n" + "  " + task;
+        } catch (NumberFormatException e) {
+            throw new AgyException("Please provide a valid task number.");
+        }
+    }
+
+    private String handleUnmark(String input) throws AgyException {
+        try {
+            int index = Integer.parseInt(input.substring(7)) - 1;
+            validateIndex(index);
+            Task task = tasks.get(index);
+            task.markAsNotDone();
+            storage.save(tasks.getAll());
+            return "OK, I've marked this task as not done yet:\n" + "  " + task;
+        } catch (NumberFormatException e) {
+            throw new AgyException("Please provide a valid task number.");
+        }
+    }
+
+    private String handleFind(String input) throws AgyException {
+        if (input.trim().length() <= 4) {
+            throw new AgyException("Error: The keyword cannot be empty. Usage: find <keyword>");
+        }
+        String keyword = input.substring(5).trim();
+        List<Task> foundTasks = tasks.findTasks(keyword);
+        if (foundTasks.isEmpty()) {
+            return "No matching tasks found.";
+        }
+        String foundListOutput = IntStream.range(0, foundTasks.size()).mapToObj(i -> (i + 1) + "." + foundTasks.get(i))
+                .collect(Collectors.joining("\n"));
+        return "Here are the matching tasks in your list:\n" + foundListOutput;
+    }
+
+    private String handleTodo(String input) throws AgyException {
+        if (input.trim().length() <= 4) {
+            throw new AgyException("Error: The description of a todo cannot be empty. Usage: todo <description>");
+        }
+        Task task = new Todo(input.substring(5));
+        return addTask(task);
+    }
+
+    private String handleDeadline(String input) throws AgyException {
+        if (input.trim().length() <= 8) {
+            throw new AgyException("Error: The description of a deadline cannot be empty. "
+                    + "Usage: deadline <description> /by <time>");
+        }
+        String[] parts = input.substring(9).split(" /by ");
+        if (parts.length < 2) {
+            throw new AgyException("Error: Dates/times cannot be empty. Usage: deadline <description> /by <time>");
+        }
+        try {
+            Task task = new Deadline(parts[0], parts[1]);
+            return addTask(task);
+        } catch (DateTimeParseException e) {
+            throw new AgyException("Error: Invalid date format. Please use yyyy-mm-dd (e.g., 2019-10-15).");
+        }
+    }
+
+    private String handleEvent(String input) throws AgyException {
+        if (input.trim().length() <= 5) {
+            throw new AgyException("Error: The description of an event cannot be empty. "
+                    + "Usage: event <description> /from <start> /to <end>");
+        }
+        String[] eventParts = input.substring(6).split(" /from ");
+        if (eventParts.length < 2) {
+            throw new AgyException("Error: Missing /from or /to. Usage: event <description> /from <start> /to <end>");
+        }
+        String[] times = eventParts[1].split(" /to ");
+        if (times.length < 2) {
+            throw new AgyException("Error: Missing /from or /to. Usage: event <description> /from <start> /to <end>");
+        }
+        Task task = new Event(eventParts[0], times[0], times[1]);
+        return addTask(task);
+    }
+
+    private String handleDelete(String input) throws AgyException {
+        try {
+            int index = Integer.parseInt(input.substring(7)) - 1;
+            validateIndex(index);
+            Task removedTask = tasks.delete(index);
+            storage.save(tasks.getAll());
+            return "Noted. I've removed this task:\n" + "  " + removedTask + "\nNow you have " + tasks.size()
+                    + " tasks in the list.";
+        } catch (NumberFormatException e) {
+            throw new AgyException("Please provide a valid task number.");
+        }
+    }
+
+    private String addTask(Task task) throws AgyException {
+        tasks.add(task);
+        storage.save(tasks.getAll());
+        return "Got it. I've added this task:\n" + "  " + task + "\nNow you have " + tasks.size()
+                + " tasks in the list.";
+    }
+
+    private void validateIndex(int index) throws AgyException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new AgyException("Invalid task number.");
+        }
     }
 }
