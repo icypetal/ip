@@ -15,6 +15,7 @@ public class Parser {
      * @throws AgyException If the command is unknown.
      */
     public static Command parse(String fullCommand) throws AgyException {
+        assert fullCommand != null : "Full command cannot be null";
         String commandStr = fullCommand.split(" ")[0].toUpperCase();
         try {
             return Command.valueOf(commandStr);

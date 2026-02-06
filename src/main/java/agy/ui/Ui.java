@@ -55,6 +55,7 @@ public class Ui {
      * @param message The message to print.
      */
     public void printMessage(String message) {
+        assert message != null : "Message to print cannot be null";
         showLine();
         System.out.println(" " + message.replace("\n", "\n "));
         showLine();
