@@ -39,6 +39,13 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
+     * Displays a welcome message from Agy.
+     */
+    public void showWelcome() {
+        dialogContainer.getChildren().add(DialogBox.getAgyDialog("Hello! I'm Agy.\nWhat can I do for you?", agyImage));
+    }
+
+    /**
      * Creates two dialog boxes, one echoing user input and the other containing
      * Agy's reply and then appends them to the dialog container. Clears the
      * user input after processing.
