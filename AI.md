@@ -86,3 +86,6 @@ Gemini 3 Pro (High) in Antigravity IDE in planning mode
 
 ## BCD-Extension
 - Added C-Tagging without issues
+
+## A-UserGuide
+- Generated a comprehensive user guide
