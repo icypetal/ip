@@ -1,4 +1,4 @@
-# User Guide
+# Agy User Guide
 
 Agy is a desktop app for managing tasks, optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, Agy can get your task management tasks done faster than traditional GUI apps.
 
